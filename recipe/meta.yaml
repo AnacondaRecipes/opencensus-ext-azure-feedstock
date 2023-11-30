@@ -10,16 +10,17 @@ source:
   sha256: 86bb1e47ce1d20acad96ad3c11f8efb2fa7ab5e9ec4896f3063d85f899490462
 
 build:
-  noarch: python
   number: 0
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
 
 requirements:
   host:
-    - python >=3.6
+    - python
     - pip
+    - wheel
+    - setuptools
   run:
-    - python >=3.6
+    - python
     - azure-core >=1.12.0,<2.0.0
     - azure-identity >=1.5.0,<2.0.0
     - opencensus >=0.11.3,<1.0.0
@@ -29,10 +30,15 @@ requirements:
 test:
   imports:
     - opencensus.ext.azure
+  requires:
+    - pip
+  commands:
+    - pip check
 
 about:
   home: https://github.com/census-instrumentation/opencensus-python
   license: Apache-2.0
+  license_family: Apache
   license_file: LICENSE
   summary: OpenCensus Azure Monitor Exporters
   description: |
